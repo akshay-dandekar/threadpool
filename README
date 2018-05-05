@@ -1,1 +1,24 @@
 Thread pool library
+
+Architecture of threadpool
+
+Every threadpool is represented by a structure 'struct threadpool'
+To create a new threadpool, call threadpool_create function.
+This function will perform following operations
+	- allocate memory for threadpool structure
+	- initialize different lists maintained by the threadpool
+		(threads_available, threads_busy, tasks)
+	- init mutex and conditional variable used to syncronize all threadpool 
+	  specific operations
+	- create a manager thread to manage threadpool operations
+	- create worker threads, init their own mutex and conditional variables and 
+	  add them (created threads) to threads_available list
+
+Following are members of the structure
+	- threads_available
+		Threads that are available to accept new tasks
+It has a list of worker threads available to accept new tasks
+
+
+        | Threadpool (struct threadpool)
+		| - Worker Threads (struct threadpool_thread)
